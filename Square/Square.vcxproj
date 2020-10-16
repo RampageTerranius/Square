@@ -151,6 +151,7 @@
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Misc Functions.cpp" />
     <ClCompile Include="PlayField.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="Misc Functions.h" />
     <ClInclude Include="PlayField.h" />
     <ClInclude Include="Renderer.h" />

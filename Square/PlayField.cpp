@@ -16,19 +16,12 @@ void GameState_PlayField::Init()
 	deaths = 0;
 
 	// Load all the textures the playfield requires.
-	allTextures.CreateTexture(GetEXEPath() + "\\Images\\Bullet.png", "bullet");
-	allTextures.CreateTexture(GetEXEPath() + "\\Images\\asteroid 10x10.png", "asteroid 10");
-	allTextures.CreateTexture(GetEXEPath() + "\\Images\\asteroid 15x15.png", "asteroid 15");
-	allTextures.CreateTexture(GetEXEPath() + "\\Images\\asteroid 20x20.png", "asteroid 20");
-	allTextures.CreateTexture(GetEXEPath() + "\\Images\\asteroid 25x25.png", "asteroid 25");
-
 	background = allTextures.CreateTexture(GetEXEPath() + "\\Images\\background.jpg", "background");
-	background->anchor = Anchor::TopLeft;
-	background->SetWidthHeight(game.SCREEN_WIDTH, game.SCREEN_HEIGHT);
-
-	allSounds.CreateChunk(GetEXEPath() + "\\Sounds\\8-bit-explosion2.aiff", "explosion");
-	allSounds.CreateChunk(GetEXEPath() + "\\Sounds\\8-bit-bump.aiff", "hit");
-	allSounds.CreateChunk(GetEXEPath() + "\\Sounds\\8-bit-laser1.aiff", "shot");
+	if (background != nullptr)
+	{
+		background->anchor = Anchor::TopLeft;
+		background->SetWidthHeight(game.SCREEN_WIDTH, game.SCREEN_HEIGHT);
+	}
 
 	// Setup player varaibles.	
 	player.tex = allTextures.CreateTexture(GetEXEPath() + "\\images\\player.png", "player");
@@ -51,6 +44,8 @@ void GameState_PlayField::Init()
 	deaths->SetAnchor(Anchor::TopRight);
 	deaths->y = 10;
 	deaths->x = game.SCREEN_WIDTH - 10;
+
+	map.SetMapWidthHeight(25, 10);
 }
 
 void GameState_PlayField::Cleanup()
@@ -76,7 +71,7 @@ bool GameState_PlayField::HandleInput()
 		running = false;
 	else
 	{
-		// Check for other input.
+		// Check for other input (non command input).
 		// TODO: other input?
 	}
 
@@ -109,9 +104,10 @@ void GameState_PlayField::Render()
 	fps->SetText(std::to_string(game.fps));
 	deaths->SetText(std::to_string(currentDeaths));
 
-	background->Draw(game.GetRenderer().renderer, 0, 0);
+	if (background != nullptr)
+		background->Draw(game.GetRenderer().renderer, 0, 0);
 
-	// TODO: draw the map here.
+	map.DrawMap(&player);
 
 	player.Draw();
 

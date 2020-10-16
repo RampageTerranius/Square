@@ -157,6 +157,7 @@ bool Texture::Draw(SDL_Renderer* renderer, float rotation, int x, int y)
 		}
 	}
 
+	debug.Log("Texture", "Draw", "Failed to draw texture: " + (std::string)SDL_GetError());
 	return false;
 }
 

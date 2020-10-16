@@ -17,22 +17,36 @@ void Entity::Draw()
 		tex->Draw(game.GetRenderer().renderer, rotation, static_cast <int> (round(x)), static_cast <int> (round(y)));
 }
 
+void Entity::MoveCameraToThisEntity()
+{
+	game.camera.x = x;
+	game.camera.y = y;
+}
+
 Player::Player()
 {
 	moveRate = game.playerMoveRate;
 }
 
+void Player::Draw()
+{
+	if (tex != nullptr)
+		tex->Draw(game.GetRenderer().renderer, rotation, game.GetRenderer().WindowWidth() / 2, game.GetRenderer().WindowHeight() / 2);
+}
+
 bool Player::Update()
 {
 	if (x < 0)
-		x = static_cast <float> (game.SCREEN_WIDTH - 1);
-	else if (x > game.SCREEN_WIDTH)
 		x = 0;
+	else if (x > game.SCREEN_WIDTH - 1)
+		x = static_cast <float> (game.SCREEN_WIDTH - 1);
 
 	if (y < 0)
-		y = static_cast <float> (game.SCREEN_HEIGHT - 1);
-	else if (y > game.SCREEN_HEIGHT)
 		y = 0;
+	else if (y > game.SCREEN_HEIGHT - 1)
+		y = static_cast <float> (game.SCREEN_HEIGHT - 1);
+
+	MoveCameraToThisEntity();
 
 	return true;
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "GameState.h"
+#include "Map.h"
 #include "Entity.h"
 #include "Command.h"
 
@@ -59,9 +60,9 @@ public:
 	void HandleEvents();
 	void Render();
 
-	// TODO: store map data here.
+	Map map;
 
-	int currentDeaths;
+	int currentDeaths;	
 
 private:
 	Player player;

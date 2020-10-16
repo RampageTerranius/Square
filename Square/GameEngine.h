@@ -39,7 +39,9 @@ public:
 	int SCREEN_HEIGHT = 768;
 	Uint32 FRAME_RATE = 60;
 
-	float playerMoveRate = 5.0;
+	float playerMoveRate = 2;
+
+	SDL_Rect camera;
 
 	class Controls
 	{

@@ -8,8 +8,9 @@ class Entity
 {
 public:
 	Entity();
-	void Draw();
+	virtual void Draw();
 	virtual bool Update() = 0;
+	void MoveCameraToThisEntity();
 
 	Texture* tex;
 	float x, y;
@@ -22,6 +23,7 @@ public:
 	Player();
 	bool Update();
 	void Respawn();
+	void Draw();
 
 	float moveRate;
 };
