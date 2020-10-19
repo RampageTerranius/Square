@@ -9,23 +9,34 @@
 #include "Textures.h"
 #include "GameEngine.h"
 
+enum class DataType
+{
+	None,
+	Null,// Used where its not possible to return the value of a square, like if out of range for example.
+	Empty,
+	Spawn,
+	Exit	
+};
+
 class Map
 {
 public:
-	SDL_Color firstColour { 255, 255, 255, 255 };
-	SDL_Color secondColour { 200, 255, 200, 255 };
+	SDL_Color firstColour{ 255, 255, 255, 255 };
+	SDL_Color secondColour{ 200, 255, 200, 255 };
+	SDL_Color spawnColour{ 100, 100, 200, 255 };
+	SDL_Color exitColour{ 0, 100, 200, 255 };
 
 	void SetMapWidthHeight(int newWidth, int newHeight);
 	void DrawMap();
-	bool GetMapData(int x, int y);
-	void SetMapData(int x, int y, bool setting);
+	DataType GetMapData(int x, int y);
+	void SetMapData(int x, int y, DataType setting);
 	//void RestartMap();
 	//void LoadMap(std::string mapName);
 
 	void Cleanup();
 
 private:
-	std::vector<std::vector<bool>> mapData;
+	std::vector<std::vector<DataType>> mapData;
 	std::string currentMap;
 	void CreateTextureForMap(int width, int height);
 	Texture mapTexture;

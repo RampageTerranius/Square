@@ -25,7 +25,7 @@ void Map::DrawMap()
 	mapTexture.Draw(game.GetRenderer().renderer, (game.GetRenderer().WindowWidth() / 2) - game.camera.x, (game.GetRenderer().WindowHeight() / 2) - game.camera.y);
 }
 
-void Map::SetMapData(int x, int y, bool setting)
+void Map::SetMapData(int x, int y, DataType setting)
 {
 	if ((x < width && x >= 0) && (y < height && y >= 0))
 	{
@@ -36,13 +36,13 @@ void Map::SetMapData(int x, int y, bool setting)
 		debug.Log("Map", "SetMapData", "Attempt to set data from location that is out of map range");
 }
 
-bool Map::GetMapData(int x, int y)
+DataType Map::GetMapData(int x, int y)
 {
 	if ((x < width && x >= 0) && (y < height && y >= 0))
 		return mapData[x][y];
 
 	debug.Log("Map", "GetMapData", "Attempt to get data from location that is out of map range");
-	return false;
+	return DataType::Null;
 }
 
 void Map::CreateTextureForMap(int width, int height)
@@ -62,12 +62,25 @@ void Map::CreateTextureForMap(int width, int height)
 			SDL_Rect rect = { 25 * i, 25 * n, 25, 25 };
 
 			// Set colour.
-			if (mapData[i][n])
+			if (mapData[i][n] > DataType::Null)
 			{
-				if ((i + n) % 2 == 0)
-					SDL_SetRenderDrawColor(game.GetRenderer().renderer, firstColour.r, firstColour.g, firstColour.b, firstColour.a);
-				else
-					SDL_SetRenderDrawColor(game.GetRenderer().renderer, secondColour.r, secondColour.g, secondColour.b, secondColour.a);
+				switch (mapData[i][n])
+				{
+				case DataType::Empty:
+					if ((i + n) % 2 == 0)
+						SDL_SetRenderDrawColor(game.GetRenderer().renderer, firstColour.r, firstColour.g, firstColour.b, firstColour.a);
+					else
+						SDL_SetRenderDrawColor(game.GetRenderer().renderer, secondColour.r, secondColour.g, secondColour.b, secondColour.a);
+					break;
+
+				case DataType::Spawn:
+					SDL_SetRenderDrawColor(game.GetRenderer().renderer, spawnColour.r, spawnColour.g, spawnColour.b, spawnColour.a);
+					break;
+
+				case DataType::Exit:
+					SDL_SetRenderDrawColor(game.GetRenderer().renderer, exitColour.r, exitColour.g, exitColour.b, exitColour.a);
+					break;
+				}
 
 				if (SDL_RenderFillRect(game.GetRenderer().renderer, &rect) < 0)
 					debug.Log("Map", "CreateTextureForMap", "Failed to fill rect to map texture: " + (std::string)SDL_GetError());

@@ -25,8 +25,8 @@ void GameState_PlayField::Init()
 
 	// Setup player varaibles.	
 	player.tex = allTextures.CreateTexture(GetEXEPath() + "\\images\\player.png", "player");
-	player.x = 13;
-	player.y = 13;
+	player.x = 12;
+	player.y = 12;
 
 	// Setup key bindings.
 	iManager.Bind(game.controls.up, commandMoveUp);
@@ -49,11 +49,14 @@ void GameState_PlayField::Init()
 
 	for (int i = 0; i < 25; i++)
 		for (int n = 0; n < 10; n++)
-			map.SetMapData(i, n, true);
+			map.SetMapData(i, n, DataType::Empty);
 
-	map.SetMapData(5, 6, false);
-	map.SetMapData(5, 5, false);
-	map.SetMapData(5, 4, false);
+	map.SetMapData(5, 6, DataType::None);
+	map.SetMapData(5, 5, DataType::None);
+	map.SetMapData(5, 4, DataType::None);
+
+	map.SetMapData(0, 0, DataType::Spawn);
+	map.SetMapData(20, 8, DataType::Exit);
 }
 
 void GameState_PlayField::Cleanup()
