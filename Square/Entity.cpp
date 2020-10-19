@@ -2,7 +2,6 @@
 #include "GameEngine.h"
 #include "Debug.h"
 #include "Misc Functions.h"
-#include <math.h>
 
 Entity::Entity()
 {

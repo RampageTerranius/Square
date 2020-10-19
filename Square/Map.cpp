@@ -7,24 +7,42 @@ void Map::Cleanup()
 		mapTexture.Clear();
 }
 
-void Map::SetMapWidthHeight(int width, int height)
+void Map::SetMapWidthHeight(int newWidth, int newHeight)
 {
+	width = newWidth;
+	height = newHeight;
+
 	// Setup the width and height for the map.
 	mapData.resize(width);
 	for (int i = 0; i < width; ++i)
-		mapData[i].resize(height);
+		mapData[i].resize(height);	
 
 	CreateTextureForMap(width, height);
 }
 
-void Map::DrawMap(Player* player)
-{
-	mapTexture.Draw(game.GetRenderer().renderer, static_cast<int> (game.GetRenderer().WindowWidth() - round(game.camera.x)), static_cast<int> (game.GetRenderer().WindowHeight() - round(game.camera.y)));
-}
-
 void Map::DrawMap()
 {
-	mapTexture.Draw(game.GetRenderer().renderer, game.GetRenderer().WindowWidth() / 2, game.GetRenderer().WindowHeight() / 2);
+	mapTexture.Draw(game.GetRenderer().renderer, (game.GetRenderer().WindowWidth() / 2) - game.camera.x, (game.GetRenderer().WindowHeight() / 2) - game.camera.y);
+}
+
+void Map::SetMapData(int x, int y, bool setting)
+{
+	if ((x < width && x >= 0) && (y < height && y >= 0))
+	{
+		mapData[x][y] = setting;
+		CreateTextureForMap(width, height);
+	}
+	else
+		debug.Log("Map", "SetMapData", "Attempt to set data from location that is out of map range");
+}
+
+bool Map::GetMapData(int x, int y)
+{
+	if ((x < width && x >= 0) && (y < height && y >= 0))
+		return mapData[x][y];
+
+	debug.Log("Map", "GetMapData", "Attempt to get data from location that is out of map range");
+	return false;
 }
 
 void Map::CreateTextureForMap(int width, int height)
@@ -44,19 +62,23 @@ void Map::CreateTextureForMap(int width, int height)
 			SDL_Rect rect = { 25 * i, 25 * n, 25, 25 };
 
 			// Set colour.
-			if ((i + n) % 2 == 0)
-				SDL_SetRenderDrawColor(game.GetRenderer().renderer, firstColour.r, firstColour.g, firstColour.b, firstColour.a);
-			else
-				SDL_SetRenderDrawColor(game.GetRenderer().renderer, secondColour.r, secondColour.g, secondColour.b, secondColour.a);
+			if (mapData[i][n])
+			{
+				if ((i + n) % 2 == 0)
+					SDL_SetRenderDrawColor(game.GetRenderer().renderer, firstColour.r, firstColour.g, firstColour.b, firstColour.a);
+				else
+					SDL_SetRenderDrawColor(game.GetRenderer().renderer, secondColour.r, secondColour.g, secondColour.b, secondColour.a);
 
-			if (SDL_RenderFillRect(game.GetRenderer().renderer, &rect) < 0)
-				debug.Log("Map", "CreateTextureForMap", "Failed to fill rect to map texture: " + (std::string)SDL_GetError());			
+				if (SDL_RenderFillRect(game.GetRenderer().renderer, &rect) < 0)
+					debug.Log("Map", "CreateTextureForMap", "Failed to fill rect to map texture: " + (std::string)SDL_GetError());
 
-			SDL_SetRenderDrawColor(game.GetRenderer().renderer, game.GetRenderer().renderColor.r, game.GetRenderer().renderColor.g, game.GetRenderer().renderColor.b, game.GetRenderer().renderColor.a);
+				SDL_SetRenderDrawColor(game.GetRenderer().renderer, game.GetRenderer().renderColor.r, game.GetRenderer().renderColor.g, game.GetRenderer().renderColor.b, game.GetRenderer().renderColor.a);
+			}
 		}
 
 	
 	mapTexture.SetTexture(tex, "MapTexture");
+	mapTexture.anchor = Anchor::TopLeft;
 
 	SDL_SetRenderTarget(game.GetRenderer().renderer, NULL);
 }

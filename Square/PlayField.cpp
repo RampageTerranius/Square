@@ -25,8 +25,8 @@ void GameState_PlayField::Init()
 
 	// Setup player varaibles.	
 	player.tex = allTextures.CreateTexture(GetEXEPath() + "\\images\\player.png", "player");
-	player.x = static_cast <float> (game.SCREEN_WIDTH) / 2.0f;
-	player.y = static_cast <float> (game.SCREEN_HEIGHT) / 2.0f;
+	player.x = 13;
+	player.y = 13;
 
 	// Setup key bindings.
 	iManager.Bind(game.controls.up, commandMoveUp);
@@ -46,6 +46,14 @@ void GameState_PlayField::Init()
 	deaths->x = game.SCREEN_WIDTH - 10;
 
 	map.SetMapWidthHeight(25, 10);
+
+	for (int i = 0; i < 25; i++)
+		for (int n = 0; n < 10; n++)
+			map.SetMapData(i, n, true);
+
+	map.SetMapData(5, 6, false);
+	map.SetMapData(5, 5, false);
+	map.SetMapData(5, 4, false);
 }
 
 void GameState_PlayField::Cleanup()
@@ -107,7 +115,7 @@ void GameState_PlayField::Render()
 	if (background != nullptr)
 		background->Draw(game.GetRenderer().renderer, 0, 0);
 
-	map.DrawMap(&player);
+	map.DrawMap();
 
 	player.Draw();
 
