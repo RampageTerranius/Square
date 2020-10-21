@@ -1,5 +1,6 @@
 #include "Map.h"
 #include "Debug.h"
+#include "GameEngine.h"
 
 void Map::Cleanup()
 {
@@ -38,6 +39,18 @@ void Map::SetMapData(int x, int y, DataType setting)
 
 DataType Map::GetMapData(int x, int y)
 {
+	if ((x < width && x >= 0) && (y < height && y >= 0))
+		return mapData[x][y];
+
+	debug.Log("Map", "GetMapData", "Attempt to get data from location that is out of map range");
+	return DataType::Null;
+}
+
+DataType Map::GetMapData(Player* player)
+{
+	int x = floor(player->x / 25);
+	int y = floor(player->y / 25);
+
 	if ((x < width && x >= 0) && (y < height && y >= 0))
 		return mapData[x][y];
 
@@ -88,7 +101,6 @@ void Map::CreateTextureForMap(int width, int height)
 				SDL_SetRenderDrawColor(game.GetRenderer().renderer, game.GetRenderer().renderColor.r, game.GetRenderer().renderColor.g, game.GetRenderer().renderColor.b, game.GetRenderer().renderColor.a);
 			}
 		}
-
 	
 	mapTexture.SetTexture(tex, "MapTexture");
 	mapTexture.anchor = Anchor::TopLeft;

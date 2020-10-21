@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include "GameState.h"
+#include "GameData.h"
 #include "Renderer.h"
 #include "EventHandle.h"
 
@@ -42,6 +43,8 @@ public:
 	float playerMoveRate = 2;
 
 	SDL_Rect camera;
+
+	GameData gameData;
 
 	class Controls
 	{

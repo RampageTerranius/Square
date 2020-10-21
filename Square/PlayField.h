@@ -1,6 +1,5 @@
 #pragma once
 #include "GameState.h"
-#include "Map.h"
 #include "Entity.h"
 #include "Command.h"
 
@@ -10,7 +9,7 @@ public:
 	CommandMoveLeft() { allowContinuousExecution = true; }
 	bool Execute(Player* player)
 	{
-		player->x -= player->moveRate;
+		player->Move(Direction::Left);
 		return true;
 	}
 };
@@ -21,7 +20,7 @@ public:
 	CommandMoveRight() { allowContinuousExecution = true; }
 	bool Execute(Player* player)
 	{
-		player->x += player->moveRate;
+		player->Move(Direction::Right);
 		return true;
 	}
 };
@@ -32,7 +31,7 @@ public:
 	CommandMoveUp() { allowContinuousExecution = true; }
 	bool Execute(Player* player)
 	{
-		player->y -= player->moveRate;
+		player->Move(Direction::Up);
 		return true;
 	}
 };
@@ -43,7 +42,7 @@ public:
 	CommandMoveDown() { allowContinuousExecution = true; }
 	bool Execute(Player* player)
 	{
-		player->y += player->moveRate;
+		player->Move(Direction::Down);
 		return true;
 	}
 };
@@ -59,8 +58,6 @@ public:
 	bool HandleInput();
 	void HandleEvents();
 	void Render();
-
-	Map map;
 
 	int currentDeaths;	
 

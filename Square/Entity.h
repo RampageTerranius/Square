@@ -17,6 +17,15 @@ public:
 	float rotation;
 };
 
+enum class Direction
+{
+	None,
+	Up,
+	Down,
+	Left,
+	Right
+};
+
 class Player : public Entity
 {
 public:
@@ -24,6 +33,7 @@ public:
 	bool Update();
 	void Respawn();
 	void Draw();
+	void Move(Direction dir);
 
 	float moveRate;
 };

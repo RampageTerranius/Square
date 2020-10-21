@@ -1,10 +1,11 @@
-#include "Main.h"
+#include "GameEngine.h"
 #include "Timer.h"
+#include "Debug.h"
 
 int main(int argc, char* argv[])
 {
-	Timer timer;
-	Timer fTimer;
+	Timer perFrametimer;
+	Timer lastTickTimer;
 
 	if (!game.HasActiveState())
 	{
@@ -12,31 +13,31 @@ int main(int argc, char* argv[])
 		game.running = false;
 	}
 
-	fTimer.Start();
+	lastTickTimer.Start();
 
-	Uint32 lastTickTime = fTimer.GetTicks();
+	Uint32 lastTickTime = lastTickTimer.GetTicks();
 
 	int framesCounted = 0;
 
 	while (game.running)
 	{
-		timer.Start();
+		perFrametimer.Start();
 
 		game.HandleInput();
 		game.HandleEvents();
 		game.Render();
 
-		Uint32 timerFps = timer.GetTicks();
+		Uint32 timerFps = perFrametimer.GetTicks();
 		framesCounted++;
 
 		if (timerFps < (1000u / game.FRAME_RATE))
 			SDL_Delay((1000u / game.FRAME_RATE) - timerFps);
 
-		if (fTimer.GetTicks() - lastTickTime >= 1000)
+		if (lastTickTimer.GetTicks() - lastTickTime >= 1000)
 		{
 			game.fps = framesCounted;
 			framesCounted = 0;
-			lastTickTime = fTimer.GetTicks();
+			lastTickTime = lastTickTimer.GetTicks();
 		}
 	}
 

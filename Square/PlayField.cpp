@@ -45,18 +45,18 @@ void GameState_PlayField::Init()
 	deaths->y = 10;
 	deaths->x = game.SCREEN_WIDTH - 10;
 
-	map.SetMapWidthHeight(25, 10);
+	game.gameData.map.SetMapWidthHeight(25, 10);
 
 	for (int i = 0; i < 25; i++)
 		for (int n = 0; n < 10; n++)
-			map.SetMapData(i, n, DataType::Empty);
+			game.gameData.map.SetMapData(i, n, DataType::Empty);
 
-	map.SetMapData(5, 6, DataType::None);
-	map.SetMapData(5, 5, DataType::None);
-	map.SetMapData(5, 4, DataType::None);
+	game.gameData.map.SetMapData(5, 6, DataType::None);
+	game.gameData.map.SetMapData(5, 5, DataType::None);
+	game.gameData.map.SetMapData(5, 4, DataType::None);
 
-	map.SetMapData(0, 0, DataType::Spawn);
-	map.SetMapData(20, 8, DataType::Exit);
+	game.gameData.map.SetMapData(0, 0, DataType::Spawn);
+	game.gameData.map.SetMapData(20, 8, DataType::Exit);
 }
 
 void GameState_PlayField::Cleanup()
@@ -118,7 +118,7 @@ void GameState_PlayField::Render()
 	if (background != nullptr)
 		background->Draw(game.GetRenderer().renderer, 0, 0);
 
-	map.DrawMap();
+	game.gameData.map.DrawMap();
 
 	player.Draw();
 

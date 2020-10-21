@@ -7,7 +7,6 @@
 
 #include "Entity.h"
 #include "Textures.h"
-#include "GameEngine.h"
 
 enum class DataType
 {
@@ -29,6 +28,7 @@ public:
 	void SetMapWidthHeight(int newWidth, int newHeight);
 	void DrawMap();
 	DataType GetMapData(int x, int y);
+	DataType GetMapData(Player* player);
 	void SetMapData(int x, int y, DataType setting);
 	//void RestartMap();
 	//void LoadMap(std::string mapName);

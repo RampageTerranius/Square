@@ -27,6 +27,64 @@ Player::Player()
 	moveRate = game.playerMoveRate;
 }
 
+void Player::Move(Direction dir)
+{
+	int originalX = x;
+	int originalY = y;
+
+	switch (dir)
+	{
+	case Direction::Up:
+		y -= moveRate;
+		if (y < 0)		
+			y = 0;
+		else
+		{
+			DataType tempData = game.gameData.map.GetMapData(this);
+			if (tempData <= DataType::Null)
+				y = floor(originalY / (double)25) * 25;
+		}
+
+		break;
+
+	case Direction::Down:
+		y += moveRate;
+		if (y < 0)
+			y = 0;
+		else
+		{
+			DataType tempData = game.gameData.map.GetMapData(this);
+			if (tempData <= DataType::Null)
+				y = (ceil(originalY / (double)25) * 25) - 1;
+		}
+		break;
+
+	case Direction::Left:
+		x -= moveRate;
+		if (x < 0)
+			x = 0;
+		else
+		{
+			DataType tempData = game.gameData.map.GetMapData(this);
+			if (tempData <= DataType::Null)
+				x = floor(originalX / (double)25) * 25;
+		}
+		break;
+
+	case Direction::Right:
+		x += moveRate;
+		if (x < 0)
+			x = 0;
+		else
+		{
+			DataType tempData = game.gameData.map.GetMapData(this);
+			if (tempData <= DataType::Null)
+				x = (ceil(originalX / (double)25) * 25) - 1;
+		}
+		break;
+	}
+}
+
 void Player::Draw()
 {
 	if (tex != nullptr)
