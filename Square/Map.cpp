@@ -58,6 +58,14 @@ DataType Map::GetMapData(Player* player)
 	return DataType::Null;
 }
 
+void Map::DefaultMapRenderColour(int i, int n)
+{
+	if ((i + n) % 2 == 0)
+		SDL_SetRenderDrawColor(game.GetRenderer().renderer, firstColour.r, firstColour.g, firstColour.b, firstColour.a);
+	else
+		SDL_SetRenderDrawColor(game.GetRenderer().renderer, secondColour.r, secondColour.g, secondColour.b, secondColour.a);
+}
+
 void Map::CreateTextureForMap(int width, int height)
 {
 	SDL_Texture* tex = SDL_CreateTexture(game.GetRenderer().renderer, NULL, SDL_TEXTUREACCESS_TARGET, 25 * width, 25 * height);	
@@ -78,12 +86,9 @@ void Map::CreateTextureForMap(int width, int height)
 			if (mapData[i][n] > DataType::Null)
 			{
 				switch (mapData[i][n])
-				{
+				{	
 				case DataType::Empty:
-					if ((i + n) % 2 == 0)
-						SDL_SetRenderDrawColor(game.GetRenderer().renderer, firstColour.r, firstColour.g, firstColour.b, firstColour.a);
-					else
-						SDL_SetRenderDrawColor(game.GetRenderer().renderer, secondColour.r, secondColour.g, secondColour.b, secondColour.a);
+					DefaultMapRenderColour(i, n);
 					break;
 
 				case DataType::Spawn:
@@ -92,6 +97,23 @@ void Map::CreateTextureForMap(int width, int height)
 
 				case DataType::Exit:
 					SDL_SetRenderDrawColor(game.GetRenderer().renderer, exitColour.r, exitColour.g, exitColour.b, exitColour.a);
+					break;
+
+				case DataType::OneWayUp:
+					DefaultMapRenderColour(i, n);
+					// TODO: Arrow draw here
+					break;
+
+				case DataType::OneWayDown:
+					DefaultMapRenderColour(i, n);
+					break;
+
+				case DataType::OneWayLeft:
+					DefaultMapRenderColour(i, n);
+					break;
+
+				case DataType::OneWayRight:
+					DefaultMapRenderColour(i, n);
 					break;
 				}
 

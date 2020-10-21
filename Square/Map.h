@@ -14,7 +14,11 @@ enum class DataType
 	Null,// Used where its not possible to return the value of a square, like if out of range for example.
 	Empty,
 	Spawn,
-	Exit	
+	Exit,
+	OneWayLeft,
+	OneWayRight,
+	OneWayUp,
+	OneWayDown
 };
 
 class Map
@@ -41,6 +45,7 @@ public:
 private:
 	std::vector<std::vector<DataType>> mapData;
 	std::string currentMap;
+	void DefaultMapRenderColour(int i, int n);
 	void CreateTextureForMap(int width, int height);
 	Texture mapTexture;
 	int width, height;
