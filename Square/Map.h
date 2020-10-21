@@ -33,6 +33,9 @@ public:
 	//void RestartMap();
 	//void LoadMap(std::string mapName);
 
+	int Width() { return width; }
+	int Height() { return height; }
+
 	void Cleanup();
 
 private:

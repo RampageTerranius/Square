@@ -49,8 +49,8 @@ void Player::Move(Direction dir)
 
 	case Direction::Down:
 		y += moveRate;
-		if (y < 0)
-			y = 0;
+		if (y > ((game.gameData.map.Height() * 25) - 1))
+			y = (game.gameData.map.Height() * 25) - 1;
 		else
 		{
 			DataType tempData = game.gameData.map.GetMapData(this);
@@ -73,8 +73,8 @@ void Player::Move(Direction dir)
 
 	case Direction::Right:
 		x += moveRate;
-		if (x < 0)
-			x = 0;
+		if (x > ((game.gameData.map.Width() * 25) - 1))
+			x = (game.gameData.map.Width() * 25) - 1;
 		else
 		{
 			DataType tempData = game.gameData.map.GetMapData(this);
