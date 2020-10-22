@@ -28,6 +28,9 @@ void GameState_PlayField::Init()
 	player.x = 12;
 	player.y = 12;
 
+	game.gameData.arrow = allTextures.CreateTexture(GetEXEPath() + "\\images\\arrow.png", "arrow");
+	game.gameData.arrow->anchor = Anchor::TopLeft;
+
 	// Setup key bindings.
 	iManager.Bind(game.controls.up, commandMoveUp);
 	iManager.Bind(game.controls.down, commandMoveDown);
@@ -57,6 +60,10 @@ void GameState_PlayField::Init()
 
 	game.gameData.map.SetMapData(0, 0, DataType::Spawn);
 	game.gameData.map.SetMapData(20, 8, DataType::Exit);
+	game.gameData.map.SetMapData(16, 6, DataType::OneWayUp);
+	game.gameData.map.SetMapData(17, 8, DataType::OneWayRight);
+	game.gameData.map.SetMapData(16, 9, DataType::OneWayDown);
+	game.gameData.map.SetMapData(15, 8, DataType::OneWayLeft);
 }
 
 void GameState_PlayField::Cleanup()

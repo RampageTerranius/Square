@@ -58,12 +58,17 @@ DataType Map::GetMapData(Player* player)
 	return DataType::Null;
 }
 
-void Map::DefaultMapRenderColour(int i, int n)
+void Map::DefaultMapRenderColour(int i, int n, SDL_Rect& rect)
 {
 	if ((i + n) % 2 == 0)
 		SDL_SetRenderDrawColor(game.GetRenderer().renderer, firstColour.r, firstColour.g, firstColour.b, firstColour.a);
 	else
 		SDL_SetRenderDrawColor(game.GetRenderer().renderer, secondColour.r, secondColour.g, secondColour.b, secondColour.a);
+
+	if (SDL_RenderFillRect(game.GetRenderer().renderer, &rect) < 0)
+		debug.Log("Map", "CreateTextureForMap", "Failed to fill rect to map texture: " + (std::string)SDL_GetError());
+
+	SDL_SetRenderDrawColor(game.GetRenderer().renderer, game.GetRenderer().renderColor.r, game.GetRenderer().renderColor.g, game.GetRenderer().renderColor.b, game.GetRenderer().renderColor.a);
 }
 
 void Map::CreateTextureForMap(int width, int height)
@@ -88,39 +93,53 @@ void Map::CreateTextureForMap(int width, int height)
 				switch (mapData[i][n])
 				{	
 				case DataType::Empty:
-					DefaultMapRenderColour(i, n);
+					DefaultMapRenderColour(i, n, rect);
 					break;
 
 				case DataType::Spawn:
 					SDL_SetRenderDrawColor(game.GetRenderer().renderer, spawnColour.r, spawnColour.g, spawnColour.b, spawnColour.a);
+
+					if (SDL_RenderFillRect(game.GetRenderer().renderer, &rect) < 0)
+						debug.Log("Map", "CreateTextureForMap", "Failed to fill rect to map texture: " + (std::string)SDL_GetError());
+
+					SDL_SetRenderDrawColor(game.GetRenderer().renderer, game.GetRenderer().renderColor.r, game.GetRenderer().renderColor.g, game.GetRenderer().renderColor.b, game.GetRenderer().renderColor.a);
+
 					break;
 
 				case DataType::Exit:
 					SDL_SetRenderDrawColor(game.GetRenderer().renderer, exitColour.r, exitColour.g, exitColour.b, exitColour.a);
+
+					if (SDL_RenderFillRect(game.GetRenderer().renderer, &rect) < 0)
+						debug.Log("Map", "CreateTextureForMap", "Failed to fill rect to map texture: " + (std::string)SDL_GetError());
+
+					SDL_SetRenderDrawColor(game.GetRenderer().renderer, game.GetRenderer().renderColor.r, game.GetRenderer().renderColor.g, game.GetRenderer().renderColor.b, game.GetRenderer().renderColor.a);
+
 					break;
 
 				case DataType::OneWayUp:
-					DefaultMapRenderColour(i, n);
-					// TODO: Arrow draw here
+					DefaultMapRenderColour(i, n, rect);
+
+					game.gameData.arrow->Draw(game.GetRenderer().renderer, 0, 25 * i, 25 * n);
 					break;
 
 				case DataType::OneWayDown:
-					DefaultMapRenderColour(i, n);
+					DefaultMapRenderColour(i, n, rect);
+
+					game.gameData.arrow->Draw(game.GetRenderer().renderer, 180, (25 * i) + 1, (25 * n) + 1);
 					break;
 
 				case DataType::OneWayLeft:
-					DefaultMapRenderColour(i, n);
+					DefaultMapRenderColour(i, n, rect);
+
+					game.gameData.arrow->Draw(game.GetRenderer().renderer, 270, 25 * i, (25 * n) + 1);
 					break;
 
 				case DataType::OneWayRight:
-					DefaultMapRenderColour(i, n);
+					DefaultMapRenderColour(i, n, rect);
+
+					game.gameData.arrow->Draw(game.GetRenderer().renderer, 90, (25 * i) + 1, 25 * n);
 					break;
-				}
-
-				if (SDL_RenderFillRect(game.GetRenderer().renderer, &rect) < 0)
-					debug.Log("Map", "CreateTextureForMap", "Failed to fill rect to map texture: " + (std::string)SDL_GetError());
-
-				SDL_SetRenderDrawColor(game.GetRenderer().renderer, game.GetRenderer().renderColor.r, game.GetRenderer().renderColor.g, game.GetRenderer().renderColor.b, game.GetRenderer().renderColor.a);
+				}	
 			}
 		}
 	

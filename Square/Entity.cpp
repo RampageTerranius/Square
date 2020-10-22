@@ -32,55 +32,53 @@ void Player::Move(Direction dir)
 	int originalX = x;
 	int originalY = y;
 
+	DataType tempData = game.gameData.map.GetMapData(this);
+
 	switch (dir)
 	{
 	case Direction::Up:
+		if (tempData == DataType::OneWayLeft || tempData == DataType::OneWayDown || tempData == DataType::OneWayRight)
+			return;
+
 		y -= moveRate;
 		if (y < 0)		
 			y = 0;
-		else
-		{
-			DataType tempData = game.gameData.map.GetMapData(this);
-			if (tempData <= DataType::Null)
-				y = floor(originalY / (double)25) * 25;
-		}
-
+		else if (tempData <= DataType::Null)
+			y = floor(originalY / (double)25) * 25;
 		break;
 
 	case Direction::Down:
+		if (tempData == DataType::OneWayLeft || tempData == DataType::OneWayUp || tempData == DataType::OneWayRight)
+			return;
+
 		y += moveRate;
 		if (y > ((game.gameData.map.Height() * 25) - 1))
 			y = (game.gameData.map.Height() * 25) - 1;
-		else
-		{
-			DataType tempData = game.gameData.map.GetMapData(this);
-			if (tempData <= DataType::Null)
-				y = (ceil(originalY / (double)25) * 25) - 1;
-		}
+		else if (tempData <= DataType::Null)
+			y = (ceil(originalY / (double)25) * 25) - 1;
 		break;
 
 	case Direction::Left:
+		if (tempData == DataType::OneWayUp || tempData == DataType::OneWayDown || tempData == DataType::OneWayRight)
+			return;
+
 		x -= moveRate;
 		if (x < 0)
 			x = 0;
-		else
-		{
-			DataType tempData = game.gameData.map.GetMapData(this);
-			if (tempData <= DataType::Null)
-				x = floor(originalX / (double)25) * 25;
-		}
+		else if (tempData <= DataType::Null)
+			x = floor(originalX / (double)25) * 25;
 		break;
 
-	case Direction::Right:
+	case Direction::Right:			
+		if (tempData == DataType::OneWayLeft || tempData == DataType::OneWayDown || tempData == DataType::OneWayUp)
+			return;
+
 		x += moveRate;
+
 		if (x > ((game.gameData.map.Width() * 25) - 1))
 			x = (game.gameData.map.Width() * 25) - 1;
-		else
-		{
-			DataType tempData = game.gameData.map.GetMapData(this);
-			if (tempData <= DataType::Null)
-				x = (ceil(originalX / (double)25) * 25) - 1;
-		}
+		else if (tempData <= DataType::Null)
+			x = (ceil(originalX / (double)25) * 25) - 1;
 		break;
 	}
 }

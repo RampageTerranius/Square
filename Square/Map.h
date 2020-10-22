@@ -45,7 +45,7 @@ public:
 private:
 	std::vector<std::vector<DataType>> mapData;
 	std::string currentMap;
-	void DefaultMapRenderColour(int i, int n);
+	void DefaultMapRenderColour(int i, int n, SDL_Rect& rect);
 	void CreateTextureForMap(int width, int height);
 	Texture mapTexture;
 	int width, height;
