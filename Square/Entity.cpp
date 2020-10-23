@@ -37,47 +37,58 @@ void Player::Move(Direction dir)
 	switch (dir)
 	{
 	case Direction::Up:
+		// Check if were already in a oneway square.
 		if (tempData == DataType::OneWayLeft || tempData == DataType::OneWayDown || tempData == DataType::OneWayRight)
 			return;
 
 		y -= moveRate;
+		tempData = game.gameData.map.GetMapData(this);
+
 		if (y < 0)		
 			y = 0;
-		else if (tempData <= DataType::Null)
+		else if (tempData <= DataType::Null || (tempData == DataType::OneWayLeft || tempData == DataType::OneWayDown || tempData == DataType::OneWayRight))
 			y = floor(originalY / (double)25) * 25;
 		break;
 
 	case Direction::Down:
+		// Check if were already in a oneway square.
 		if (tempData == DataType::OneWayLeft || tempData == DataType::OneWayUp || tempData == DataType::OneWayRight)
 			return;
 
 		y += moveRate;
+		tempData = game.gameData.map.GetMapData(this);
+
 		if (y > ((game.gameData.map.Height() * 25) - 1))
 			y = (game.gameData.map.Height() * 25) - 1;
-		else if (tempData <= DataType::Null)
+		else if (tempData <= DataType::Null || (tempData == DataType::OneWayLeft || tempData == DataType::OneWayUp || tempData == DataType::OneWayRight))
 			y = (ceil(originalY / (double)25) * 25) - 1;
 		break;
 
 	case Direction::Left:
-		if (tempData == DataType::OneWayUp || tempData == DataType::OneWayDown || tempData == DataType::OneWayRight)
+		// Check if were already in a oneway square.
+		if (tempData == DataType::OneWayRight || tempData == DataType::OneWayDown || tempData == DataType::OneWayUp)
 			return;
 
 		x -= moveRate;
+		tempData = game.gameData.map.GetMapData(this);
+
 		if (x < 0)
 			x = 0;
-		else if (tempData <= DataType::Null)
+		else if (tempData <= DataType::Null || (tempData == DataType::OneWayRight || tempData == DataType::OneWayDown || tempData == DataType::OneWayUp))
 			x = floor(originalX / (double)25) * 25;
 		break;
 
-	case Direction::Right:			
+	case Direction::Right:
+		// Check if were already in a oneway square.
 		if (tempData == DataType::OneWayLeft || tempData == DataType::OneWayDown || tempData == DataType::OneWayUp)
 			return;
 
 		x += moveRate;
+		tempData = game.gameData.map.GetMapData(this);
 
 		if (x > ((game.gameData.map.Width() * 25) - 1))
 			x = (game.gameData.map.Width() * 25) - 1;
-		else if (tempData <= DataType::Null)
+		else if (tempData <= DataType::Null || (tempData == DataType::OneWayLeft || tempData == DataType::OneWayDown || tempData == DataType::OneWayUp))
 			x = (ceil(originalX / (double)25) * 25) - 1;
 		break;
 	}
