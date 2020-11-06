@@ -1,21 +1,8 @@
 #pragma once
-#include <list>
+#include <vector>
 
 #include "Textures.h"
 #include "Audio.h"
-
-class Entity
-{
-public:
-	Entity();
-	virtual void Draw();
-	virtual bool Update() = 0;
-	void MoveCameraToThisEntity();
-
-	Texture* tex;
-	float x, y;
-	float rotation;
-};
 
 enum class Direction
 {
@@ -26,6 +13,21 @@ enum class Direction
 	Right
 };
 
+class Entity
+{
+public:
+	Entity();
+	virtual void Draw();
+	virtual bool Update() = 0;
+	virtual void Move(Direction dir);
+	void MoveCameraToThisEntity();
+
+	Texture* tex;
+	float x, y;
+	float rotation;
+	float moveRate;
+};
+
 class Player : public Entity
 {
 public:
@@ -33,7 +35,26 @@ public:
 	bool Update();
 	void Respawn();
 	void Draw();
-	void Move(Direction dir);
-
-	float moveRate;
+	void Move(Direction dir);	
 };
+
+class MovePoint
+{
+public:
+	SDL_Point point;
+	float speed;
+};
+
+class Object : public Entity
+{
+public:
+	bool Update();
+	void Move();
+	void MoveToCurrentTargetPoint(bool changeToNextPointOnArrival);
+
+private:
+	std::vector<MovePoint> movePoints;
+	int currentTargetPoint = 0;
+	bool killOnTouch = false;
+};
+

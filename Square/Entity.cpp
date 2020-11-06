@@ -1,6 +1,7 @@
 #include "Entity.h"
 #include "GameEngine.h"
 #include "Debug.h"
+#include "Vector2D.h"
 #include "Misc Functions.h"
 
 Entity::Entity()
@@ -8,12 +9,35 @@ Entity::Entity()
 	tex = nullptr;
 	x = y = 0.0f;
 	rotation = 0.0f;
+	moveRate = 0.0f;
 }
 
 void Entity::Draw()
 {
 	if (tex != nullptr)
 		tex->Draw(game.GetRenderer().renderer, rotation, static_cast <int> (round(x)), static_cast <int> (round(y)));
+}
+
+void Entity::Move(Direction dir)
+{
+	switch (dir)
+	{
+	case Direction::Up:
+		y -= moveRate;
+		break;
+
+	case Direction::Down:
+		y += moveRate;
+		break;
+
+	case Direction::Left:
+		x -= moveRate;
+		break;
+
+	case Direction::Right:
+		x += moveRate;
+		break;
+	}
 }
 
 void Entity::MoveCameraToThisEntity()
@@ -120,4 +144,50 @@ bool Player::Update()
 void Player::Respawn()
 {
 	// TODO: respawn player at maps starting point.
+}
+
+void Object::MoveToCurrentTargetPoint(bool changeToNextPointOnArrival)
+{
+	if (movePoints.size() > 0)
+	{
+		if (x != movePoints[currentTargetPoint].point.x && y != movePoints[currentTargetPoint].point.y)
+		{
+			// Get current distance for future calculations.
+			float distance = sqrt(pow(movePoints[currentTargetPoint].point.x - x, 2) + pow(movePoints[currentTargetPoint].point.y - y, 2));
+
+			// Calculate direction and move object.
+			float oldXLoc = x;
+			float oldYLoc = y;
+
+			Vector2D diffVec(movePoints[currentTargetPoint].point.x - x, movePoints[currentTargetPoint].point.y - y);
+			diffVec.Normalize();
+
+			x += diffVec.x;
+			y += diffVec.y;
+
+			// Determine if object has traveled past the target point.
+			if (distance > sqrt(pow(movePoints[currentTargetPoint].point.x - x, 2) + pow(movePoints[currentTargetPoint].point.y - y, 2)))
+			{
+				x = movePoints[currentTargetPoint].point.x;
+				y = movePoints[currentTargetPoint].point.y;
+
+				if (changeToNextPointOnArrival)
+				{
+					currentTargetPoint++;
+					if (currentTargetPoint >= movePoints.size())
+						currentTargetPoint = 0;
+				}
+			}				
+		}
+	}
+}
+
+void Object::Move()
+{
+	MoveToCurrentTargetPoint(true);
+}
+
+bool Object::Update()
+{
+	return true;
 }
