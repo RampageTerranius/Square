@@ -50,10 +50,11 @@ class Object : public Entity
 public:
 	bool Update();
 	void Move();
+	void Draw();
 	void MoveToCurrentTargetPoint(bool changeToNextPointOnArrival);
-
-private:
 	std::vector<MovePoint> movePoints;
+
+private:	
 	int currentTargetPoint = 0;
 	bool killOnTouch = false;
 };

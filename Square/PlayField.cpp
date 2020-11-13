@@ -64,6 +64,32 @@ void GameState_PlayField::Init()
 	game.gameData.map.SetMapData(17, 8, DataType::OneWayRight);
 	game.gameData.map.SetMapData(16, 9, DataType::OneWayDown);
 	game.gameData.map.SetMapData(15, 8, DataType::OneWayLeft);
+
+
+	Object obj;
+
+	obj.x = 50;
+	obj.y = 50;
+
+	obj.tex = game.gameData.arrow;
+	
+	obj.moveRate = 2.0;
+	MovePoint p;
+
+	p.point.x = 100;
+	p.point.y = 100;
+	p.speed = 2.0;
+	obj.movePoints.push_back(p);
+	p.point.x = 200;
+	p.point.y = 200;
+	p.speed = 2.0;
+	obj.movePoints.push_back(p);
+	p.point.x = 150;
+	p.point.y = 150;
+	p.speed = 2.0;
+	obj.movePoints.push_back(p);
+
+	game.gameData.map.objects.push_back(obj);
 }
 
 void GameState_PlayField::Cleanup()
@@ -107,10 +133,11 @@ void GameState_PlayField::CheckForCollisons()
 
 void GameState_PlayField::HandleEvents()
 {
+	// Handle object events.
+	game.gameData.map.RunObjectEvents();
+
 	// Handle players events.
 	player.Update();
-
-	// TODO: handle all objects here
 
 	CheckForCollisons();
 }
@@ -126,6 +153,8 @@ void GameState_PlayField::Render()
 		background->Draw(game.GetRenderer().renderer, 0, 0);
 
 	game.gameData.map.DrawMap();
+
+	game.gameData.map.DrawObjects();
 
 	player.Draw();
 

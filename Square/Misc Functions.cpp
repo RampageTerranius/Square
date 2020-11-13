@@ -1,4 +1,5 @@
 #include "Misc Functions.h"
+#include "GameEngine.h"
 
 #include <Windows.h>
 #include <PathCch.h>
@@ -19,4 +20,17 @@ std::string GetEXEPath()
 float GetDistance(float x1, float y1, float x2, float y2)
 {
 	return static_cast <float> (sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2)));
+}
+
+// Gets the X/Y coordinate on the screen where the given point would be.
+// This does not factor for the coord potentially being off the screen, it is up to the user to determine this.
+SDL_Point GetScreenCoordFromMapPoint(SDL_Point point)
+{
+	SDL_Point mapCoord = { 0, 0 };
+
+	// Convert mouse and camera into the location on the map we are pointing at.
+	mapCoord.x = (game.GetRenderer().WindowWidth() / 2) + game.camera.x + point.x;
+	mapCoord.y = (game.GetRenderer().WindowHeight() / 2) + game.camera.y + point.y;
+
+	return mapCoord;
 }

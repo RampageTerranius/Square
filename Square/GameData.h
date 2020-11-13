@@ -9,4 +9,5 @@ class GameData
 public:
 	Map map;	
 	Texture* arrow;
+	SDL_Rect camera;
 };

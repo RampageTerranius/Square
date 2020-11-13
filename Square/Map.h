@@ -31,6 +31,7 @@ public:
 
 	void SetMapWidthHeight(int newWidth, int newHeight);
 	void DrawMap();
+	void DrawObjects();
 	DataType GetMapData(int x, int y);
 	DataType GetMapData(Player* player);
 	void SetMapData(int x, int y, DataType setting);
@@ -43,12 +44,13 @@ public:
 
 	void Cleanup();
 
+	std::vector<Object> objects;
+
 private:
 	std::vector<std::vector<DataType>> mapData;
 	std::string currentMap;
 	void DefaultMapRenderColour(int i, int n, SDL_Rect& rect);
-	void CreateTextureForMap(int width, int height);
-	std::vector<Object> objects;
+	void CreateTextureForMap(int width, int height);	
 	Texture mapTexture;
 	int width, height;
 };

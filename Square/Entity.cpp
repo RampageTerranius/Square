@@ -161,12 +161,15 @@ void Object::MoveToCurrentTargetPoint(bool changeToNextPointOnArrival)
 
 			Vector2D diffVec(movePoints[currentTargetPoint].point.x - x, movePoints[currentTargetPoint].point.y - y);
 			diffVec.Normalize();
+			diffVec.Multiply(movePoints[currentTargetPoint].speed);
 
 			x += diffVec.x;
 			y += diffVec.y;
 
+			float newDistance = sqrt(pow(movePoints[currentTargetPoint].point.x - x, 2) + pow(movePoints[currentTargetPoint].point.y - y, 2));
+
 			// Determine if object has traveled past the target point.
-			if (distance > sqrt(pow(movePoints[currentTargetPoint].point.x - x, 2) + pow(movePoints[currentTargetPoint].point.y - y, 2)))
+			if (newDistance > distance)
 			{
 				x = movePoints[currentTargetPoint].point.x;
 				y = movePoints[currentTargetPoint].point.y;
@@ -190,4 +193,17 @@ void Object::Move()
 bool Object::Update()
 {
 	return true;
+}
+
+void Object::Draw()
+{
+	if (tex != nullptr)
+	{
+		SDL_Point point1 = GetScreenCoordFromMapPoint({ static_cast<int> (x), static_cast<int> (y) });
+		SDL_Point point2;
+		point2.x = point1.x - (tex->Rect().w / 2);
+		point2.y = point1.y - (tex->Rect().y / 2);
+
+		tex->Draw(game.GetRenderer().renderer, rotation, point2.x, point2.y);
+	}		
 }

@@ -26,6 +26,12 @@ void Map::DrawMap()
 	mapTexture.Draw(game.GetRenderer().renderer, (game.GetRenderer().WindowWidth() / 2) - game.camera.x, (game.GetRenderer().WindowHeight() / 2) - game.camera.y);
 }
 
+void Map::DrawObjects()
+{
+	for (Object obj : objects)
+		obj.Draw();
+}
+
 void Map::SetMapData(int x, int y, DataType setting)
 {
 	if ((x < width && x >= 0) && (y < height && y >= 0))
@@ -147,4 +153,10 @@ void Map::CreateTextureForMap(int width, int height)
 	mapTexture.anchor = Anchor::TopLeft;
 
 	SDL_SetRenderTarget(game.GetRenderer().renderer, NULL);
+}
+
+void Map::RunObjectEvents()
+{
+	for (Object& obj : objects)
+		obj.MoveToCurrentTargetPoint(true);
 }
