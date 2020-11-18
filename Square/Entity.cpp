@@ -150,11 +150,11 @@ void Object::MoveToCurrentTargetPoint(bool changeToNextPointOnArrival)
 {
 	if (movePoints.size() > 0)
 	{
-		if (x != movePoints[currentTargetPoint].point.x && y != movePoints[currentTargetPoint].point.y)
-		{
-			// Get current distance for future calculations.
-			float distance = sqrt(pow(movePoints[currentTargetPoint].point.x - x, 2) + pow(movePoints[currentTargetPoint].point.y - y, 2));
-
+		// Get current distance for future calculations.
+		float distance = sqrt(pow(movePoints[currentTargetPoint].point.x - x, 2) + pow(movePoints[currentTargetPoint].point.y - y, 2));
+		float newDistance = sqrt(pow(movePoints[currentTargetPoint].point.x - x, 2) + pow(movePoints[currentTargetPoint].point.y - y, 2));
+		if (distance != 0)
+		{		
 			// Calculate direction and move object.
 			float oldXLoc = x;
 			float oldYLoc = y;
@@ -166,21 +166,20 @@ void Object::MoveToCurrentTargetPoint(bool changeToNextPointOnArrival)
 			x += diffVec.x;
 			y += diffVec.y;
 
-			float newDistance = sqrt(pow(movePoints[currentTargetPoint].point.x - x, 2) + pow(movePoints[currentTargetPoint].point.y - y, 2));
+			newDistance = sqrt(pow(movePoints[currentTargetPoint].point.x - x, 2) + pow(movePoints[currentTargetPoint].point.y - y, 2));
+		}
+		// Determine if object has traveled past the target point.
+		if (newDistance > distance || distance == 0)
+		{
+			x = movePoints[currentTargetPoint].point.x;
+			y = movePoints[currentTargetPoint].point.y;
 
-			// Determine if object has traveled past the target point.
-			if (newDistance > distance)
+			if (changeToNextPointOnArrival)
 			{
-				x = movePoints[currentTargetPoint].point.x;
-				y = movePoints[currentTargetPoint].point.y;
-
-				if (changeToNextPointOnArrival)
-				{
-					currentTargetPoint++;
-					if (currentTargetPoint >= movePoints.size())
-						currentTargetPoint = 0;
-				}
-			}				
+				currentTargetPoint++;
+				if (currentTargetPoint >= movePoints.size())
+					currentTargetPoint = 0;
+			}
 		}
 	}
 }

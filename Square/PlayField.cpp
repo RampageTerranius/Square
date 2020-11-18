@@ -88,7 +88,7 @@ void GameState_PlayField::Init()
 	p.speed = 2.0;
 	obj.movePoints.push_back(p);
 	p.point.x = 150;
-	p.point.y = 150;
+	p.point.y = 100;
 	p.speed = 2.0;
 	obj.movePoints.push_back(p);
 
