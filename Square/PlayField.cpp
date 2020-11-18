@@ -23,13 +23,16 @@ void GameState_PlayField::Init()
 		background->SetWidthHeight(game.SCREEN_WIDTH, game.SCREEN_HEIGHT);
 	}
 
+	game.gameData.playerTex = allTextures.CreateTexture(GetEXEPath() + "\\images\\player.png", "player");
+	game.gameData.playerTex->anchor = Anchor::Center;
+
 	// Setup player varaibles.	
-	player.tex = allTextures.CreateTexture(GetEXEPath() + "\\images\\player.png", "player");
+	player.tex = game.gameData.playerTex;
 	player.x = 12;
 	player.y = 12;
 
-	game.gameData.arrow = allTextures.CreateTexture(GetEXEPath() + "\\images\\arrow.png", "arrow");
-	game.gameData.arrow->anchor = Anchor::TopLeft;
+	game.gameData.arrowTex = allTextures.CreateTexture(GetEXEPath() + "\\images\\arrow.png", "arrow");
+	game.gameData.arrowTex->anchor = Anchor::TopLeft;
 
 	// Setup key bindings.
 	iManager.Bind(game.controls.up, commandMoveUp);
@@ -53,7 +56,7 @@ void GameState_PlayField::Init()
 	for (int i = 0; i < 25; i++)
 		for (int n = 0; n < 10; n++)
 			game.gameData.map.SetMapData(i, n, DataType::Empty);
-
+	/*
 	game.gameData.map.SetMapData(5, 6, DataType::None);
 	game.gameData.map.SetMapData(5, 5, DataType::None);
 	game.gameData.map.SetMapData(5, 4, DataType::None);
@@ -64,14 +67,14 @@ void GameState_PlayField::Init()
 	game.gameData.map.SetMapData(17, 8, DataType::OneWayRight);
 	game.gameData.map.SetMapData(16, 9, DataType::OneWayDown);
 	game.gameData.map.SetMapData(15, 8, DataType::OneWayLeft);
-
+	*/
 
 	Object obj;
 
 	obj.x = 50;
 	obj.y = 50;
 
-	obj.tex = game.gameData.arrow;
+	obj.tex = game.gameData.playerTex;
 	
 	obj.moveRate = 2.0;
 	MovePoint p;

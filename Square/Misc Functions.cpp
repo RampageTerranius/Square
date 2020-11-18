@@ -29,8 +29,8 @@ SDL_Point GetScreenCoordFromMapPoint(SDL_Point point)
 	SDL_Point mapCoord = { 0, 0 };
 
 	// Convert mouse and camera into the location on the map we are pointing at.
-	mapCoord.x = (game.GetRenderer().WindowWidth() / 2) + game.camera.x + point.x;
-	mapCoord.y = (game.GetRenderer().WindowHeight() / 2) + game.camera.y + point.y;
+	mapCoord.x = (point.x - game.camera.x) + (game.GetRenderer().WindowWidth() / 2);
+	mapCoord.y = (point.y - game.camera.y) + (game.GetRenderer().WindowHeight() / 2);
 
 	return mapCoord;
 }

@@ -8,6 +8,7 @@ class GameData
 {
 public:
 	Map map;	
-	Texture* arrow;
+	Texture* arrowTex;
+	Texture* playerTex;
 	SDL_Rect camera;
 };

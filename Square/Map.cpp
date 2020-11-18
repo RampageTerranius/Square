@@ -125,25 +125,25 @@ void Map::CreateTextureForMap(int width, int height)
 				case DataType::OneWayUp:
 					DefaultMapRenderColour(i, n, rect);
 
-					game.gameData.arrow->Draw(game.GetRenderer().renderer, 0, 25 * i, 25 * n);
+					game.gameData.arrowTex->Draw(game.GetRenderer().renderer, 0, 25 * i, 25 * n);
 					break;
 
 				case DataType::OneWayDown:
 					DefaultMapRenderColour(i, n, rect);
 
-					game.gameData.arrow->Draw(game.GetRenderer().renderer, 180, (25 * i) + 1, (25 * n) + 1);
+					game.gameData.arrowTex->Draw(game.GetRenderer().renderer, 180, (25 * i) + 1, (25 * n) + 1);
 					break;
 
 				case DataType::OneWayLeft:
 					DefaultMapRenderColour(i, n, rect);
 
-					game.gameData.arrow->Draw(game.GetRenderer().renderer, 270, 25 * i, (25 * n) + 1);
+					game.gameData.arrowTex->Draw(game.GetRenderer().renderer, 270, 25 * i, (25 * n) + 1);
 					break;
 
 				case DataType::OneWayRight:
 					DefaultMapRenderColour(i, n, rect);
 
-					game.gameData.arrow->Draw(game.GetRenderer().renderer, 90, (25 * i) + 1, 25 * n);
+					game.gameData.arrowTex->Draw(game.GetRenderer().renderer, 90, (25 * i) + 1, 25 * n);
 					break;
 				}	
 			}

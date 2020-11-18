@@ -199,11 +199,8 @@ void Object::Draw()
 {
 	if (tex != nullptr)
 	{
-		SDL_Point point1 = GetScreenCoordFromMapPoint({ static_cast<int> (x), static_cast<int> (y) });
-		SDL_Point point2;
-		point2.x = point1.x - (tex->Rect().w / 2);
-		point2.y = point1.y - (tex->Rect().y / 2);
+		SDL_Point point = GetScreenCoordFromMapPoint({ static_cast<int> (x), static_cast<int> (y) });
 
-		tex->Draw(game.GetRenderer().renderer, rotation, point2.x, point2.y);
+		tex->Draw(game.GetRenderer().renderer, rotation, point.x, point.y);
 	}		
 }
