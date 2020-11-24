@@ -116,6 +116,16 @@ void Player::Move(Direction dir)
 			x = (ceil(originalX / (double)25) * 25) - 1;
 		break;
 	}
+
+	if (x < 0)
+		x = 0;
+	else if (x > game.SCREEN_WIDTH - 1)
+		x = static_cast <float> (game.SCREEN_WIDTH - 1);
+
+	if (y < 0)
+		y = 0;
+	else if (y > game.SCREEN_HEIGHT - 1)
+		y = static_cast <float> (game.SCREEN_HEIGHT - 1);
 }
 
 void Player::Draw()
@@ -126,24 +136,26 @@ void Player::Draw()
 
 bool Player::Update()
 {
-	if (x < 0)
-		x = 0;
-	else if (x > game.SCREEN_WIDTH - 1)
-		x = static_cast <float> (game.SCREEN_WIDTH - 1);
-
-	if (y < 0)
-		y = 0;
-	else if (y > game.SCREEN_HEIGHT - 1)
-		y = static_cast <float> (game.SCREEN_HEIGHT - 1);
-
 	MoveCameraToThisEntity();
+
+	//for (Object obj : game.gameData.map.objects)
+		
 
 	return true;
 }
 
 void Player::Respawn()
 {
-	// TODO: respawn player at maps starting point.
+	if (game.gameData.map.spawnPoint.x != -1 && game.gameData.map.spawnPoint.y != -1)
+	{
+		x = (game.gameData.map.spawnPoint.x * 25) / 2;
+		y = (game.gameData.map.spawnPoint.y * 25) / 2;
+	}
+	else
+	{
+		x = 0;
+		y = 0;
+	}
 }
 
 void Object::MoveToCurrentTargetPoint(bool changeToNextPointOnArrival)
@@ -201,5 +213,20 @@ void Object::Draw()
 		SDL_Point point = GetScreenCoordFromMapPoint({ static_cast<int> (x), static_cast<int> (y) });
 
 		tex->Draw(game.GetRenderer().renderer, rotation, point.x, point.y);
-	}		
+	}
+}
+
+void Object::AffectPlayer(Player* player)
+{
+	effect.Run(player);
+}
+
+void Effect::Run(Player* player)
+{
+
+}
+
+void Effect_Kill::Run(Player* player)
+{
+	player->Respawn();
 }

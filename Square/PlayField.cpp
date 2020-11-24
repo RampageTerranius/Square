@@ -28,8 +28,6 @@ void GameState_PlayField::Init()
 
 	// Setup player varaibles.	
 	player.tex = game.gameData.playerTex;
-	player.x = 12;
-	player.y = 12;
 
 	game.gameData.arrowTex = allTextures.CreateTexture(GetEXEPath() + "\\images\\arrow.png", "arrow");
 	game.gameData.arrowTex->anchor = Anchor::TopLeft;
@@ -56,13 +54,16 @@ void GameState_PlayField::Init()
 	for (int i = 0; i < 25; i++)
 		for (int n = 0; n < 10; n++)
 			game.gameData.map.SetMapData(i, n, DataType::Empty);
+
+	game.gameData.map.SetSpawn(1, 1);
+	game.gameData.map.SetExit(20, 8);
+
 	/*
 	game.gameData.map.SetMapData(5, 6, DataType::None);
 	game.gameData.map.SetMapData(5, 5, DataType::None);
 	game.gameData.map.SetMapData(5, 4, DataType::None);
 
-	game.gameData.map.SetMapData(0, 0, DataType::Spawn);
-	game.gameData.map.SetMapData(20, 8, DataType::Exit);
+	
 	game.gameData.map.SetMapData(16, 6, DataType::OneWayUp);
 	game.gameData.map.SetMapData(17, 8, DataType::OneWayRight);
 	game.gameData.map.SetMapData(16, 9, DataType::OneWayDown);
@@ -93,6 +94,8 @@ void GameState_PlayField::Init()
 	obj.movePoints.push_back(p);
 
 	game.gameData.map.objects.push_back(obj);
+
+	player.Respawn();
 }
 
 void GameState_PlayField::Cleanup()

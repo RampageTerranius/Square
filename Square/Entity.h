@@ -45,6 +45,17 @@ public:
 	float speed;
 };
 
+class Effect
+{
+public:
+	virtual void Run(Player* player);
+};
+
+class Effect_Kill : Effect
+{
+	void Run(Player* player);
+};
+
 class Object : public Entity
 {
 public:
@@ -52,10 +63,11 @@ public:
 	void Move();
 	void Draw();
 	void MoveToCurrentTargetPoint(bool changeToNextPointOnArrival);
+	void AffectPlayer(Player* player);
 	std::vector<MovePoint> movePoints;
 
 private:	
 	int currentTargetPoint = 0;
-	bool killOnTouch = false;
+	Effect effect;
 };
 

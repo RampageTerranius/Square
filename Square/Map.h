@@ -28,7 +28,9 @@ public:
 	SDL_Color secondColour{ 200, 255, 200, 255 };
 	SDL_Color spawnColour{ 100, 100, 200, 255 };
 	SDL_Color exitColour{ 0, 100, 200, 255 };
-
+	
+	void SetSpawn(int x, int y);
+	void SetExit(int x, int y);
 	void SetMapWidthHeight(int newWidth, int newHeight);
 	void DrawMap();
 	void DrawObjects();
@@ -45,8 +47,10 @@ public:
 	void Cleanup();
 
 	std::vector<Object> objects;
+	SDL_Point spawnPoint{ -1, -1 };
+	SDL_Point exitPoint{ -1, -1 };
 
-private:
+private:	
 	std::vector<std::vector<DataType>> mapData;
 	std::string currentMap;
 	void DefaultMapRenderColour(int i, int n, SDL_Rect& rect);

@@ -8,6 +8,32 @@ void Map::Cleanup()
 		mapTexture.Clear();
 }
 
+void Map::SetSpawn(int x, int y)
+{
+	if (spawnPoint.x != -1 && spawnPoint.y != -1)	
+		mapData[spawnPoint.x][spawnPoint.y] = DataType::Empty;
+	
+	
+	spawnPoint.x = x;
+	spawnPoint.y = y;		
+	mapData[spawnPoint.x][spawnPoint.y] = DataType::Spawn;
+	
+	CreateTextureForMap(width, height);
+}
+
+void Map::SetExit(int x, int y)
+{
+	if (exitPoint.x != -1 && exitPoint.y != -1)
+		mapData[exitPoint.x][exitPoint.y] = DataType::Empty;
+	
+	
+	exitPoint.x = x;
+	exitPoint.y = y;
+	mapData[exitPoint.x][exitPoint.y] = DataType::Exit;
+	
+	CreateTextureForMap(width, height);
+}
+
 void Map::SetMapWidthHeight(int newWidth, int newHeight)
 {
 	width = newWidth;
