@@ -164,8 +164,6 @@ void GameState_PlayField::Render()
 
 	player.Draw();
 
-	// TODO: draw all objects here.
-
 	allTTF.RenderAll();
 
 	SDL_RenderPresent(game.GetRenderer().renderer);

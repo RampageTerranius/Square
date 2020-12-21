@@ -136,10 +136,11 @@ void Player::Draw()
 
 bool Player::Update()
 {
-	MoveCameraToThisEntity();
+	MoveCameraToThisEntity();		
 
-	//for (Object obj : game.gameData.map.objects)
-		
+	for (auto object : game.gameData.map.objects)
+		if (GetDistance(x, y, object.x, object.y <= 25))
+			object.AffectPlayer(this);
 
 	return true;
 }
@@ -218,7 +219,7 @@ void Object::Draw()
 
 void Object::AffectPlayer(Player* player)
 {
-	effect.Run(player);
+	effect->Run(player);
 }
 
 void Effect::Run(Player* player)
@@ -229,4 +230,12 @@ void Effect::Run(Player* player)
 void Effect_Kill::Run(Player* player)
 {
 	player->Respawn();
+}
+
+void Effect_Repel::Run(Player* player)
+{
+	if (GetDistance(*x, *y, player->x, player->y) < repelDistance)
+	{
+		// Repel player here.
+	}
 }

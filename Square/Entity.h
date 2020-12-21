@@ -48,12 +48,27 @@ public:
 class Effect
 {
 public:
+	Effect(float* xVar, float* yVar) { x = xVar; y = yVar; }
+	float* x;
+	float* y;
 	virtual void Run(Player* player);
 };
 
-class Effect_Kill : Effect
+class Effect_Kill : public Effect
 {
+public:
+	Effect_Kill(float* xVar, float* yVar) : Effect(xVar, yVar) {};
 	void Run(Player* player);
+};
+
+class Effect_Repel : Effect
+{
+public:
+	Effect_Repel(float* xVar, float* yVar) : Effect(xVar, yVar) {};
+	void Run(Player* player);
+	float repelStrength;
+	float repelDistance;
+	float distanceDivisor;
 };
 
 class Object : public Entity
@@ -68,6 +83,5 @@ public:
 
 private:	
 	int currentTargetPoint = 0;
-	Effect effect;
+	Effect* effect;
 };
-
